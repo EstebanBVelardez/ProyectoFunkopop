@@ -59,11 +59,11 @@ function validarConsulta(consulta) {
 
 /*function validarGeneral() {
     if (
-        validarCodigo(document.getElementById("codigo")).value == true &&
-        validarNombre(document.getElementById("nombre")).value &&
-        validarNum(document.getElementById("numSerie")).value &&
-        validarCategoria(document.getElementById("categoria")).value &&
-        validarConsulta(document.getElementById("descripcion")).value
+        validarCodigo(document.getElementById("codigo")) == true &&
+        validarNombre(document.getElementById("nombre")) &&
+        validarNum(document.getElementById("numSerie")) &&
+        validarCategoria(document.getElementById("categoria")) &&
+        validarConsulta(document.getElementById("descripcion"))
     ) {
         return true;
     } else {

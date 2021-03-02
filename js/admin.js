@@ -3,6 +3,7 @@ import { Funko } from './funkoClass.js';
 //import { validarGeneral } from './validaciones.js';
 
 
+
 let listaFunkopop = [];
 const modalProducto = new bootstrap.Modal(document.getElementById('modalFunkopop'))
 
@@ -27,31 +28,39 @@ window.agregarFunkopop = function(event) {
         //}else{
         //}
         //parte 1
-    let codigo = document.getElementById("codigo").value;
-    let nombre = document.getElementById("nombre").value;
-    let numSerie = document.getElementById("numSerie").value;
-    let categoria = document.getElementById("categoria").value;
-    let descripcion = document.getElementById("descripcion").value;
-    let imagen = document.getElementById("imagen").value;
+    if (validarCodigo(document.getElementById("codigo")) == true &&
+        validarNombre(document.getElementById("nombre")) &&
+        validarNum(document.getElementById("numSerie")) &&
+        validarCategoria(document.getElementById("categoria")) &&
+        validarConsulta(document.getElementById("descripcion"))) {
+        let codigo = document.getElementById("codigo").value;
+        let nombre = document.getElementById("nombre").value;
+        let numSerie = document.getElementById("numSerie").value;
+        let categoria = document.getElementById("categoria").value;
+        let descripcion = document.getElementById("descripcion").value;
+        let imagen = document.getElementById("imagen").value;
 
-    //creo el nuevo producto funkpop
-    let nuevoFunkopop = new Funko(codigo, nombre, numSerie, categoria, descripcion, imagen)
-        //agrego el nuevo funkopop a la lista
-    listaFunkopop.push(nuevoFunkopop)
-        //guardar lista de funkos en localStorage
-    localStorage.setItem('listaFunkokey', JSON.stringify(listaFunkopop))
-        //limpiar el formulario
-    limpiarFormulario()
-        //mostrar mensaje al usuario que el producto fue creado 
-    Swal.fire(
-            'Nuevo Funkopop',
-            'El Funkopop se agrego correctamente',
-            'success'
-        )
-        //llamar a la funcion leerDatos
-    leerDatos();
-    //cerrar la ventana modal
-    modalProducto.hide();
+        //creo el nuevo producto funkpop
+        let nuevoFunkopop = new Funko(codigo, nombre, numSerie, categoria, descripcion, imagen)
+            //agrego el nuevo funkopop a la lista
+        listaFunkopop.push(nuevoFunkopop)
+            //guardar lista de funkos en localStorage
+        localStorage.setItem('listaFunkokey', JSON.stringify(listaFunkopop))
+            //limpiar el formulario
+        limpiarFormulario()
+            //mostrar mensaje al usuario que el producto fue creado 
+        Swal.fire(
+                'Nuevo Funkopop',
+                'El Funkopop se agrego correctamente',
+                'success'
+            )
+            //llamar a la funcion leerDatos
+        leerDatos();
+        //cerrar la ventana modal
+        modalProducto.hide();
+    } else {
+        alert('los datos son incorrectos')
+    }
 }
 
 function limpiarFormulario() {
@@ -104,3 +113,73 @@ function dibujarDatosEnTabla(_listaFunkopop) {
 window.eliminarFunkopop = function(boton) {
     console.log("dentro de la funcion funkopop")
 }
+
+//validaciones
+
+window.validarCodigo = function(codigo) {
+    console.log("desde el blur");
+    if (codigo.value.trim() === "") {
+        codigo.className = "form-control is-invalid";
+        return false;
+    } else {
+        codigo.className = "form-control is-valid";
+        return true;
+    }
+}
+
+window.validarNombre = function(nombre) {
+    console.log("desde el blur");
+    if (nombre.value.trim() === "") {
+        nombre.className = "form-control is-invalid";
+        return false;
+    } else {
+        nombre.className = "form-control is-valid";
+        return true;
+    }
+}
+
+window.validarNum = function(inputNum) {
+    console.log("desde el blur");
+    if (inputNum.value.trim() != "" && !isNaN(inputNum.value)) {
+        inputNum.className = "form-control is-valid";
+        return true;
+    } else {
+        inputNum.className = "form-control is-invalid";
+        return false;
+    }
+}
+
+window.validarCategoria = function(categoria) {
+    console.log("desde el blur");
+    if (categoria.value.trim() === "") {
+        categoria.className = "form-control is-invalid";
+        return false;
+    } else {
+        categoria.className = "form-control is-valid";
+        return true;
+    }
+}
+
+window.validarConsulta = function(consulta) {
+    if (consulta.value.trim() != "" && consulta.value.length >= 10) {
+        consulta.className = "form-control is-valid";
+        return true;
+    } else {
+        consulta.className = "form-control is-invalid";
+        return false;
+    }
+}
+
+/*function validarGeneral() {
+    if (
+        validarCodigo(document.getElementById("codigo")) == true &&
+        validarNombre(document.getElementById("nombre")) &&
+        validarNum(document.getElementById("numSerie")) &&
+        validarCategoria(document.getElementById("categoria")) &&
+        validarConsulta(document.getElementById("descripcion"))
+    ) {
+        return true;
+    } else {
+        return false;
+    }
+}*/
