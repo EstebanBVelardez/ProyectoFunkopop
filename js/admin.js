@@ -7,13 +7,14 @@ import { Funko } from './funkoClass.js';
 let listaFunkopop = [];
 const modalProducto = new bootstrap.Modal(document.getElementById('modalFunkopop'))
 
-//Variable bande que me ayuda a decidir cuando tengo que modificar y cuando estoy tratando de agregar un funko
+//Variable bandera que me ayuda a decidir cuando tengo que modificar y cuando estoy tratando de agregar un funko
 //modificarFunkopop = true estoy modificando, cuando sea false estoy agregando un nuevo funko
 let modificarFunkopop = false;
 
 let btnAgregar = document.getElementById('btnAgregar')
 btnAgregar.addEventListener('click', function() {
-    modalProducto.show()
+    limpiarFormulario();
+    modalProducto.show();
 })
 
 //llamar a la funcion leerdatos del localstorage
@@ -23,8 +24,7 @@ let nuevoFunkopop = new Funko(1, 'dasd', 'asdasdas222', 'dc', 'sadasd', 'asdasd'
 console.log(nuevoFunkopop)
 
 
-window.agregarFunkopop = function(event) {
-    event.preventDefault()
+function agregarFunkopop() {
     console.log('dentro de agregar funko')
         //validar general
         //if(validargeneral){
@@ -69,6 +69,7 @@ window.agregarFunkopop = function(event) {
 
 function limpiarFormulario() {
     document.getElementById('formFunkopop').reset()
+    modificarFunkopop = false
 }
 
 function leerDatos() {
@@ -164,11 +165,52 @@ window.prepararFunkopop = function(boton) {
     document.getElementById('categoria').value = funkopopEncontrado.categoria;
     document.getElementById('descripcion').value = funkopopEncontrado.descripcion;
     document.getElementById('imagen').value = funkopopEncontrado.imagen;
-
-    //mostrar ventana modal
+    //cambiar el estado de mi variable modificarFunkopop
+    modificarFunkopop = true
+        //mostrar ventana modal
     modalProducto.show()
 }
 
+
+window.guardarFunko = function(event) {
+    event.preventDefault();
+    // if(true) es lo mismo que if(true===true)
+    if (modificarFunkopop) {
+        // modificar un funkopop existente
+        modificarFunkoExistente();
+    } else {
+        agregarFunkopop();
+    }
+}
+
+function modificarFunkoExistente() {
+    // validar nuevamente los datos ingresados
+    // tomar los valores modificados del formulario
+    let codigo = document.getElementById('codigo').value;
+    let nombre = document.getElementById('nombre').value;
+    let categoria = document.getElementById('categoria').value;
+    let numSerie = document.getElementById('numSerie').value;
+    let descripcion = document.getElementById('descripcion').value;
+    let imagen = document.getElementById('imagen').value;
+    // buscar el objeto y modifico sus datos
+    for (let i in listaFunkopop) {
+        if (listaFunkopop[i].codigo === codigo) {
+            listaFunkopop[i].nombre = nombre;
+            listaFunkopop[i].categoria = categoria;
+            listaFunkopop[i].numSerie = numSerie;
+            listaFunkopop[i].descripcion = descripcion;
+            listaFunkopop[i].imagen = imagen;
+        }
+    }
+    // actualizo el localstorage
+    localStorage.setItem('listaFunkokey', JSON.stringify(listaFunkopop));
+    // mostrar alerta al usuario
+    Swal.fire("Funkopop modificado", "El funkopop seleccionado fue modificado exitosamente.", "success");
+    // dibujo los datos actualizados en la tabla
+    leerDatos();
+    // cerrar ventana modal
+    modalProducto.hide();
+}
 
 //validaciones
 
